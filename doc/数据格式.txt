@@ -1,0 +1,24 @@
+1) ������ַ http://10.40.6.82,�˿�:29900
+
+2) ����iLocִ��  http://10.40.6.82:29900/iLoc post��ʽ�ύ
+���ݸ�ʽ:
+{ data:{ buffer: 'this is test 12345, testing!'},
+  defLoc: {s: 'is', e: ',',ei:true}
+}
+ 
+ ���صĽ��:
+ { data:
+   { buffer: 'this is test 12345, testing!',
+     succeed: true,
+     result: ' is test 12345,',
+	 text_result:' is test 12345',
+     start: 19 },
+  defLoc: { s: 'is', e: ',', ei: true }
+  }
+  
+  s:��ʼ�ַ���
+  sf:�ӿ�ʼ�ַ��������ҵ�������
+  si:�Ƿ������ʼ�ַ���
+  e:�����ַ���
+  ef:�ӽ����ַ��������ҵ�������
+  ei:�Ƿ���������ַ���
