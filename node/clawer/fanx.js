@@ -45,8 +45,15 @@ function iLoc()
         var data=$$.data,buffer=data.buffer,buffer_l=data.buffer.toLowerCase();
         var nstart=!!data.start?parseInt(data.start):0;//nstart存在就取整不存在则为0
         var defLoc=$$.defLoc;
-        var start=!!defLoc.s?defLoc.s:'',sForward=!!defLoc.sf?defLoc.sf:null,end=!!defLoc.e?defLoc.e:'',eForward=!!defLoc.ef?defLoc.ef:null,sIncluded=!!defLoc.si?defLoc.si:false,eIncluded=!!defLoc.ei?defLoc.ei:false,bw=!!defLoc.bw?defLoc.bw:false;
-        var br=true,nextN=nstart;
+        if(!Array.isArray(defLoc)){
+           defLoc=[defLoc];
+        }
+        for(var i=0;i<defLoc.length;i++){
+            var start=!!defLoc[i].s?defLoc[i].s:'',sForward=!!defLoc[i].sf?defLoc[i].sf:null,end=!!defLoc[i].e?defLoc[i].e:'',eForward=!!defLoc[i].ef?defLoc[i].ef:null,sIncluded=!!defLoc[i].si?defLoc[i].si:false,eIncluded=!!defLoc[i].ei?defLoc[i].ei:false,bw=!!defLoc[i].bw?defLoc[i].bw:false;
+            var br=true,nextN=nstart;
+        }
+        // var start=!!defLoc.s?defLoc.s:'',sForward=!!defLoc.sf?defLoc.sf:null,end=!!defLoc.e?defLoc.e:'',eForward=!!defLoc.ef?defLoc.ef:null,sIncluded=!!defLoc.si?defLoc.si:false,eIncluded=!!defLoc.ei?defLoc.ei:false,bw=!!defLoc.bw?defLoc.bw:false;
+        // var br=true,nextN=nstart;
         //var ni=!!start?buffer_l.indexOf(start,nstart):nstart,nj=-1,result=null;
         if(!!bw){
             var ni=!!start?buffer_l.lastIndexOf(start):nstart,nj=-1,result=null;
