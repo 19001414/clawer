@@ -46,7 +46,7 @@ function iLoc()
         for(var j=0;j<data.length;j++){
             var buffer = data[j].buffer,buffer_l = buffer.toLowerCase()
             var nstart=!!data[j].start?parseInt(data[j].start):0;//nstart存在就取整不存在则为0
-            data[j].succeed = false;
+            data[j].succeed = false,data[j].ignore=false;
             var defLoc=$$.defLoc;
             if(!Array.isArray(defLoc)){
                 defLoc=[defLoc];

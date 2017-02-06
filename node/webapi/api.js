@@ -1,4 +1,4 @@
-﻿var clawer=require('../clawer/clawer.js');
+﻿var clawer=require('../clawer/fetch.js');
 var iLoc=clawer.get({data:{type:'iLoc'}});
 
 function WebAPI()
