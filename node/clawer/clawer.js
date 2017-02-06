@@ -39,7 +39,7 @@ function iLoc()
 	
 	function read($$)
 	{
-		var data=$$.data,buffer=data.buffer,buffer_l=data.buffer_l;
+		var data=$$.data,buffer=data.buffer,buffer_l=buffer.toLowerCase();
 		var nstart=!!data.start?parseInt(data.start):0;//nstart存在就取整不存在则为0
 		var defLoc=$$.defLoc;
 		// if(!Array.isArray(defLoc)){
@@ -50,17 +50,19 @@ function iLoc()
 		// }
 		var start=!!defLoc.s?defLoc.s:'',sForward=!!defLoc.sf?defLoc.sf:null,end=!!defLoc.e?defLoc.e:'',eForward=!!defLoc.ef?defLoc.ef:null,sIncluded=!!defLoc.si?defLoc.si:false,eIncluded=!!defLoc.ei?defLoc.ei:false,bw=!!defLoc.bw?defLoc.bw:false;
 		var br=true,nextN=nstart;
-		var ni=!!start?buffer_l.indexOf(start,nstart):nstart,nj=-1,result=null;
-
+		//var ni=!!start?buffer_l.indexOf(start,nstart):nstart,nj=-1,result=null;
+		if(!!bw){
+            var ni=!!start?buffer_l.lastIndexOf(start):nstart,nj=-1,result=null;
+		}else{
+            var ni=!!start?buffer_l.indexOf(start,nstart):nstart,nj=-1,result=null;
+		}
 		data.succeed=false
-		
 		if(!start&&!end)
 		{
 			data.succeed=false;
 
 			if(!!$$.callback)
 				setImmediate($$.callback)
-			
 			return;
 		}
 	
@@ -79,34 +81,64 @@ function iLoc()
 
             if(br)
 			{
-				if(!end)
+				if(!end){
 					nj=buffer_l.length;
-				else if((nj=buffer_l.indexOf(end,ni))!=-1)
-				{
-					if(!!eForward)
-					{
-						if((nj=buffer_l.indexOf(eForward,nj))!=-1)
-						{
-							nextN=nj+eForward.length;
-							nj+=!eIncluded?0:eForward.length;
-						}
-						else 
-							br=false;
-					}
-					else
-					{
-						nextN=nj+end.length;
-						nj+=!eIncluded?0:end.length;
-					}
 				}
-				else
-					br=false;
+                else if(!!bw){
+                    if((nj=buffer_l.lastIndexOf(end))!=-1){
+                        if(!!eForward){
+                            if((nj = buffer_l.lastIndexOf(eForward,nj))!=-1){
+                                nextN = nj+eForward.length
+                                nj+=!eIncluded?0:eForward.length
+                            }else{
+                                br= false
+                            }
+                        }else{
+                            nextN = nj+end.length;
+                            nj+=!eIncluded?0:end.length;
+                        }
+                    }
+                }
+                else
+                {
+                    if((nj=buffer_l.indexOf(end,ni))!=-1){
+                        if(!!eForward)
+                        {
+                            if((nj=buffer_l.indexOf(eForward,nj))!=-1)
+                            {
+                                nextN=nj+eForward.length;
+                                nj+=!eIncluded?0:eForward.length;
+                            }
+                            else
+                                br=false;
+                        }
+                        else
+                        {
+                            nextN=nj+end.length;
+                            nj+=!eIncluded?0:end.length;
+                        }
+                    }else{
+                    	br =false
+					}
+                }
 			}
 			
 			if(br)
 			{
 				data.succeed=true;
-				data.result=buffer.substring(ni,nj);
+				//data.result=buffer_l.substring(ni,nj);
+                if(!!bw){
+                    //data.result=buffer_l.substring(nj+1,ni-1);
+					if(eIncluded&&sIncluded){
+                        data.result=buffer_l.substring(nj-1,ni+1);
+					}else if(sIncluded||eIncluded){
+                        data.result=buffer_l.substring(nj,ni);
+					}else{
+                        data.result=buffer_l.substring(nj+1,ni-1);
+					}
+                }else{
+                    data.result=buffer_l.substring(ni,nj);
+                }
 				data.start=nextN;
 			}
 			else
@@ -136,6 +168,7 @@ function iTask($$)
 	{
 		
 	}
+
 }
 
 module.exports=new ObjectFactory();
